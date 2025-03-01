@@ -1,0 +1,28 @@
+@use '../../styles/variables.scss' as variables;
+
+.header {
+  position: relative;
+  padding: 22px 0;
+  border-bottom: 1px solid variables.$border-color;
+  margin-bottom: 10px;
+
+  &_title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  &_button {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  &_icon {
+    width: 20px;
+    height: 16px;
+  }
+}
