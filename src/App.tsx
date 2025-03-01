@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router';
 import { HomePage } from './pages/HomePage';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import styles from './App.module.scss';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App = () => {
   return (
@@ -13,6 +14,7 @@ export const App = () => {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       <Footer />

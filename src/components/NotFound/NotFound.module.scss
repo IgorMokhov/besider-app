@@ -1,0 +1,14 @@
+@use '../../styles/variables.scss' as variables;
+
+.notfound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+
+  &_link {
+    color: variables.$accent-color;
+  }
+}
