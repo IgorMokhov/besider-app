@@ -7,9 +7,7 @@ interface ISidebarLinkProps extends ISidebarLink {}
 export const SidebarLink = ({ name, path }: ISidebarLinkProps) => {
   return (
     <li className={styles.side_item}>
-      <NavLink className={styles.side_link} to={path}>
-        {name.toUpperCase()}
-      </NavLink>
+      <NavLink to={path}>{name.toUpperCase()}</NavLink>
     </li>
   );
 };

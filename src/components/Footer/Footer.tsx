@@ -6,18 +6,10 @@ export const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footer_links}>
-        <Link className={styles.footer_link} to="#">
-          Log In
-        </Link>
-        <Link className={styles.footer_link} to="#">
-          About Us
-        </Link>
-        <Link className={styles.footer_link} to="#">
-          Publishers
-        </Link>
-        <Link className={styles.footer_link} to="#">
-          Sitemap
-        </Link>
+        <Link to="#">Log In</Link>
+        <Link to="#">About Us</Link>
+        <Link to="#">Publishers</Link>
+        <Link to="#">Sitemap</Link>
       </div>
       <p>Powered by</p>
       <img className={styles.footer_img} src={footerImg} alt="footer image" />
