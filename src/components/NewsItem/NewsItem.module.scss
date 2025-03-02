@@ -1,0 +1,35 @@
+@use '../../styles/variables.scss' as variables;
+
+.article {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid variables.$border-color;
+  margin-bottom: 16px;
+
+  &_img {
+    width: 85px;
+    height: 85px;
+    margin-top: 25px;
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &_source {
+    color: variables.$accent-color;
+    font-size: 14px;
+  }
+
+  &_text {
+    min-height: 97px;
+  }
+
+  &_date {
+    color: variables.$secondary-color;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+}
