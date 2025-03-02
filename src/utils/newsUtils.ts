@@ -18,3 +18,14 @@ export const formatDate = (date: string) => {
     .replace(',', '')
     .replace(':', '.');
 };
+
+export const getImageUrl = (multimedia: IMultimedia[]) => {
+  if (!multimedia.length) return loadingImg;
+
+  const baseUrl = 'https://static01.nyt.com/';
+  const path =
+    multimedia.find((i) => i.subType === 'thumbLarge')?.url ||
+    multimedia.find((i) => i.subType === 'thumbnail')?.url;
+
+  return path ? `${baseUrl}${path}` : loadingImg;
+};
