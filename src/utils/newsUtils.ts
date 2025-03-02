@@ -29,3 +29,15 @@ export const getImageUrl = (multimedia: IMultimedia[]) => {
 
   return path ? `${baseUrl}${path}` : loadingImg;
 };
+
+export const extractNewsData = (data: IArticle[]): INewsItem[] => {
+  return data
+    ?.map((article) => ({
+      title: article.abstract,
+      url: article.web_url,
+      date: formatDate(article.pub_date),
+      source: article.source,
+      imageUrl: getImageUrl(article.multimedia),
+    }))
+    .reverse();
+};
