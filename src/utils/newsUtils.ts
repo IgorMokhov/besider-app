@@ -41,3 +41,19 @@ export const extractNewsData = (data: IArticle[]): INewsItem[] => {
     }))
     .reverse();
 };
+
+export const groupByDate = (news: INewsItem[]) => {
+  return news.reduce<Record<string, INewsItem[]>>((acc, item) => {
+    const [month, day, year] = item.date.split(' ');
+    const dataKey = `${day} ${month} ${year}`;
+
+    if (!acc[dataKey]) {
+      acc[dataKey] = [];
+    }
+
+    acc[dataKey].push(item);
+
+    return acc;
+  }, {});
+};
+
