@@ -1,0 +1,13 @@
+.news {
+  &_date {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 11px;
+  }
+
+  &_list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+  }
+}
