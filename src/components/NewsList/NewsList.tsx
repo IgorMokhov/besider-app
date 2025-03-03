@@ -9,7 +9,7 @@ import { Error } from '../../UI/Error/Error';
 import styles from './NewsList.module.scss';
 
 export const NewsList = () => {
-  const { data, isError, error, isLoading } = useGetNewsQuery();
+  const { data, isError, error, isLoading, refetch } = useGetNewsQuery();
   const [visibleCount, setVisibleCount] = useState<number>(10);
   const { ref, inView } = useInView({ threshold: 1 });
 
@@ -24,6 +24,14 @@ export const NewsList = () => {
   useEffect(() => {
     if (isError) console.log(error);
   }, [isError]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   if (isLoading) return <Loader />;
   if (isError) return <Error errorMessage={(error as IError).error} />;
