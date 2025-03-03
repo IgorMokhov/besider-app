@@ -4,6 +4,8 @@ import { extractNewsData, groupByDate } from '../../utils/newsUtils';
 import { NewsItem } from '../NewsItem/NewsItem';
 import { Loader } from '../../UI/Loader/Loader';
 import { useInView } from 'react-intersection-observer';
+import { IError } from '../../types/errors';
+import { Error } from '../../UI/Error/Error';
 import styles from './NewsList.module.scss';
 
 export const NewsList = () => {
@@ -24,6 +26,7 @@ export const NewsList = () => {
   }, [isError]);
 
   if (isLoading) return <Loader />;
+  if (isError) return <Error errorMessage={(error as IError).error} />;
 
   return (
     <section className={styles.news}>
