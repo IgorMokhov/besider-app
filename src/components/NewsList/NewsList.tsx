@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetNewsQuery } from '../../redux/api/news/newsApi';
 import { extractNewsData, groupByDate } from '../../utils/newsUtils';
 import { NewsItem } from '../NewsItem/NewsItem';
+import { Loader } from '../../UI/Loader/Loader';
+import { useInView } from 'react-intersection-observer';
 import styles from './NewsList.module.scss';
 
 export const NewsList = () => {
-  const { data } = useGetNewsQuery();
+  const { data, isError, error, isLoading } = useGetNewsQuery();
+  const [visibleCount, setVisibleCount] = useState<number>(10);
+  const { ref, inView } = useInView({ threshold: 1 });
+
   const newsData = extractNewsData(data?.response.docs || []);
-  const groupedNews = groupByDate(newsData);
+  const visibleNews = newsData.slice(0, visibleCount);
+  const groupedNews = groupByDate(visibleNews);
+
+  useEffect(() => {
+    if (inView) setVisibleCount((prev) => prev + 10);
+  }, [inView]);
+
+  useEffect(() => {
+    if (isError) console.log(error);
+  }, [isError]);
+
+  if (isLoading) return <Loader />;
 
   return (
     <section className={styles.news}>
@@ -21,6 +37,9 @@ export const NewsList = () => {
           </ul>
         </React.Fragment>
       ))}
+      <div className={styles.news_loader} ref={ref}>
+        <Loader />
+      </div>
     </section>
   );
 };
