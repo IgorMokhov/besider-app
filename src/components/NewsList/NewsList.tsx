@@ -1,37 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import { useGetNewsQuery } from '../../redux/api/news/newsApi';
+import { useLazyGetNewsQuery } from '../../redux/api/news/newsApi';
 import { extractNewsData, groupByDate } from '../../utils/newsUtils';
 import { NewsItem } from '../NewsItem/NewsItem';
 import { Loader } from '../../UI/Loader/Loader';
 import { useInView } from 'react-intersection-observer';
 import { IError } from '../../types/errors';
 import { Error } from '../../UI/Error/Error';
+import { IArticle } from '../../types/news';
 import styles from './NewsList.module.scss';
+import {
+  CURRENT_MONTH,
+  CURRENT_YEAR,
+  VISIBLE_COUNT,
+} from '../../redux/api/news/config';
 
 export const NewsList = () => {
-  const { data, isError, error, isLoading, refetch } = useGetNewsQuery();
-  const [visibleCount, setVisibleCount] = useState<number>(10);
+  const [news, setNews] = useState<IArticle[]>([]);
+  const [getNews, { data, isSuccess, isError, error, isLoading }] =
+    useLazyGetNewsQuery();
+  const [visibleCount, setVisibleCount] = useState<number>(VISIBLE_COUNT);
   const { ref, inView } = useInView({ threshold: 1 });
 
-  const newsData = extractNewsData(data?.response.docs || []);
+  const newsData = extractNewsData(news || []);
   const visibleNews = newsData.slice(0, visibleCount);
   const groupedNews = groupByDate(visibleNews);
 
   useEffect(() => {
-    if (inView) setVisibleCount((prev) => prev + 10);
-  }, [inView]);
+    if (isSuccess && data) setNews(data.response.docs);
+    if (isError && error) console.log(error);
+  }, [isSuccess, isError, data, error]);
 
   useEffect(() => {
-    if (isError) console.log(error);
-  }, [isError]);
+    if (inView) setVisibleCount((prev) => prev + VISIBLE_COUNT);
+
+    const isAllNewsVisible = news.length > 0 && visibleCount >= news.length;
+    if (isAllNewsVisible) {
+      let prevMonth = CURRENT_MONTH - 1;
+      let prevYear = CURRENT_YEAR;
+
+      if (prevMonth === 0) {
+        prevMonth = 12;
+        prevYear -= 1;
+      }
+
+      getNews({ year: prevYear, month: prevMonth })
+        .unwrap()
+        .then((res) => setNews((prev) => prev.concat(res.response.docs)))
+        .catch((error) => console.log(error));
+    }
+  }, [inView, news.length]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      refetch();
+      getNews({ year: CURRENT_YEAR, month: CURRENT_MONTH });
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [refetch]);
+  }, []);
+
+  useEffect(() => {
+    getNews({ year: CURRENT_YEAR, month: CURRENT_MONTH }).unwrap();
+  }, []);
 
   if (isLoading) return <Loader />;
   if (isError) return <Error errorMessage={(error as IError).error} />;
