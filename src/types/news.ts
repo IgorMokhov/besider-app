@@ -17,6 +17,11 @@ export interface IGetNewsResponse {
   };
 }
 
+export interface IGetNewsRequest {
+  year?: number;
+  month?: number;
+}
+
 export interface INewsItem {
   title: string;
   url: string;
