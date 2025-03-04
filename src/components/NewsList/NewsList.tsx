@@ -6,49 +6,56 @@ import { Loader } from '../../UI/Loader/Loader';
 import { useInView } from 'react-intersection-observer';
 import { IError } from '../../types/errors';
 import { Error } from '../../UI/Error/Error';
-import { IArticle } from '../../types/news';
-import styles from './NewsList.module.scss';
+import { INewsItem } from '../../types/news';
 import {
   CURRENT_MONTH,
   CURRENT_YEAR,
   VISIBLE_COUNT,
 } from '../../redux/api/news/config';
+import styles from './NewsList.module.scss';
 
 export const NewsList = () => {
-  const [news, setNews] = useState<IArticle[]>([]);
-  const [getNews, { data, isSuccess, isError, error, isLoading }] =
+  const [getNews, { data, isSuccess, isError, error: errorNews, isLoading }] =
     useLazyGetNewsQuery();
-  const [visibleCount, setVisibleCount] = useState<number>(VISIBLE_COUNT);
   const { ref, inView } = useInView({ threshold: 1 });
 
-  const newsData = extractNewsData(news || []);
-  const visibleNews = newsData.slice(0, visibleCount);
-  const groupedNews = groupByDate(visibleNews);
+  const [news, setNews] = useState<INewsItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(VISIBLE_COUNT);
+  const isAllNewsVisible = news.length > 0 && visibleCount >= news.length;
 
-  useEffect(() => {
-    if (isSuccess && data) setNews(data.response.docs);
-    if (isError && error) console.log(error);
-  }, [isSuccess, isError, data, error]);
+  const visibleNews = news.slice(0, visibleCount);
+  const groupedNews = groupByDate(visibleNews);
 
   useEffect(() => {
     if (inView) setVisibleCount((prev) => prev + VISIBLE_COUNT);
 
-    const isAllNewsVisible = news.length > 0 && visibleCount >= news.length;
     if (isAllNewsVisible) {
-      let prevMonth = CURRENT_MONTH - 1;
-      let prevYear = CURRENT_YEAR;
+      let newMonth = CURRENT_MONTH - 1;
+      let newYear = CURRENT_YEAR;
 
-      if (prevMonth === 0) {
-        prevMonth = 12;
-        prevYear -= 1;
+      if (newMonth === 0) {
+        newMonth = 12;
+        newYear -= 1;
       }
 
-      getNews({ year: prevYear, month: prevMonth })
+      setError(null);
+      getNews({ year: newYear, month: newMonth })
         .unwrap()
-        .then((res) => setNews((prev) => prev.concat(res.response.docs)))
-        .catch((error) => console.log(error));
+        .then((res) =>
+          setNews((prev) => prev.concat(extractNewsData(res.response.docs)))
+        )
+        .catch((error) => setError((error as IError).error));
     }
-  }, [inView, news.length]);
+  }, [inView, isAllNewsVisible]);
+
+  useEffect(() => {
+    if (isSuccess) setNews(extractNewsData(data.response.docs));
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError && errorNews) setError((errorNews as IError).error);
+  }, [isError, errorNews]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -63,7 +70,7 @@ export const NewsList = () => {
   }, []);
 
   if (isLoading) return <Loader />;
-  if (isError) return <Error errorMessage={(error as IError).error} />;
+  if (error) return <Error errorMessage={error} />;
 
   return (
     <section className={styles.news}>
