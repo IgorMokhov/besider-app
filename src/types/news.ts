@@ -18,8 +18,8 @@ export interface IGetNewsResponse {
 }
 
 export interface IGetNewsRequest {
-  year?: number;
-  month?: number;
+  year: number;
+  month: number;
 }
 
 export interface INewsItem {
