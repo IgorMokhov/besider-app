@@ -5,5 +5,9 @@ interface IErrorProps {
 }
 
 export const Error = ({ errorMessage }: IErrorProps) => {
-  return <p className={styles.error}>{errorMessage || 'Unknown error'}</p>;
+  return (
+    <p className={styles.error}>
+      {errorMessage || 'Unknown error, check console.'}
+    </p>
+  );
 };

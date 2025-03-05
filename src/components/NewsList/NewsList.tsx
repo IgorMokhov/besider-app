@@ -70,7 +70,7 @@ export const NewsList = () => {
   }, []);
 
   if (isLoading) return <Loader />;
-  if (error) return <Error errorMessage={error} />;
+  if (error !== null) return <Error errorMessage={error} />;
 
   return (
     <section className={styles.news}>

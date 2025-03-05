@@ -4,10 +4,10 @@ import styles from './News.module.scss';
 
 export const News = () => {
   return (
-    <main className={styles.news}>
+    <div className={styles.news}>
       <Container>
         <NewsList />
       </Container>
-    </main>
+    </div>
   );
 };
