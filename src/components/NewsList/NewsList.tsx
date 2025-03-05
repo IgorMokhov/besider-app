@@ -76,7 +76,7 @@ export const NewsList = () => {
     <section className={styles.news}>
       {Object.entries(groupedNews).map(([date, articles]) => (
         <React.Fragment key={date}>
-          <h4 className={styles.news_date}>News for {date}</h4>
+          <h4 className={styles.news_date}>News for {date.replace(',', '')}</h4>
           <ul className={styles.news_list}>
             {articles.map((article) => (
               <NewsItem {...article} key={article.url} />
