@@ -3,8 +3,8 @@ import { Header } from './components/Header/Header';
 import { Route, Routes } from 'react-router';
 import { HomePage } from './pages/HomePage';
 import { Sidebar } from './components/Sidebar/Sidebar';
-import styles from './App.module.scss';
 import { NotFoundPage } from './pages/NotFoundPage';
+import styles from './App.module.scss';
 
 export const App = () => {
   return (
@@ -12,10 +12,14 @@ export const App = () => {
       <Header />
       <Sidebar />
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <div className={styles.app_content}>
+        <main className={styles.app_main}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
+      </div>
 
       <Footer />
     </div>
