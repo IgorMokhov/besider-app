@@ -1,7 +1,11 @@
 .side {
   &_item {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     list-style-type: none;
+
+    @media (max-width: 870px) {
+      font-size: 22px;
+    }
   }
 }

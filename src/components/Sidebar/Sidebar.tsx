@@ -1,8 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-  closeSidebar,
-  selectSidebar,
-} from '../../redux/slices/sidebar/sidebarSlice';
+import { closeSidebar, selectSidebar } from '../../redux/slices/sidebar/sidebarSlice';
 import closeIcon from '../../assets/icons/close-icon.svg';
 import { SidebarLink } from '../SidebarLink/SidebarLink';
 import { links } from '../../data/links';
@@ -13,11 +10,8 @@ export const Sidebar = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <aside className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
-      <button
-        className={styles.sidebar_closeBtn}
-        onClick={() => dispatch(closeSidebar())}
-      >
+    <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
+      <button className={styles.sidebar_closeBtn} onClick={() => dispatch(closeSidebar())}>
         <img src={closeIcon} alt="close" />
       </button>
       <nav>
@@ -27,6 +21,6 @@ export const Sidebar = () => {
           ))}
         </ul>
       </nav>
-    </aside>
+    </div>
   );
 };

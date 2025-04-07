@@ -2,6 +2,7 @@ import styles from './Header.module.scss';
 import menuIcon from '../../assets/icons/menu-icon.svg';
 import { useAppDispatch } from '../../redux/hooks';
 import { openSidebar } from '../../redux/slices/sidebar/sidebarSlice';
+import { Sidebar } from '../Sidebar/Sidebar';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
@@ -9,6 +10,8 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <h1 className={styles.header_title}>BESIDER</h1>
+      <Sidebar />
+
       <button
         className={styles.header_button}
         onClick={() => dispatch(openSidebar())}

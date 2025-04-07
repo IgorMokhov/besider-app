@@ -1,6 +1,10 @@
 @use '../../styles/variables.scss' as variables;
 
 .header {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  align-items: center;
   position: relative;
   padding: 22px 0;
   border-bottom: 1px solid variables.$border-color;
@@ -8,16 +12,20 @@
   &_title {
     font-size: 24px;
     font-weight: 700;
-    text-align: center;
   }
 
   &_button {
+    display: none;
     position: absolute;
     top: 30px;
     left: 20px;
     background: none;
     border: none;
     cursor: pointer;
+
+    @media (max-width: 870px) {
+      display: block;
+    }
   }
 
   &_icon {

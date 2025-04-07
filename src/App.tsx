@@ -2,7 +2,6 @@ import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
 import { Route, Routes } from 'react-router';
 import { HomePage } from './pages/HomePage';
-import { Sidebar } from './components/Sidebar/Sidebar';
 import { NotFoundPage } from './pages/NotFoundPage';
 import styles from './App.module.scss';
 
@@ -10,7 +9,6 @@ export const App = () => {
   return (
     <div className={styles.app}>
       <Header />
-      <Sidebar />
 
       <div className={styles.app_content}>
         <main className={styles.app_main}>
